@@ -112,7 +112,11 @@ pipeline {
          }
         
 
-           stage('Deploy'){
+          stage('Deploy'){
+                 when{
+                expression{
+                    params.deploy
+             }
             
               steps{
                 script{
