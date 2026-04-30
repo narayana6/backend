@@ -13,7 +13,7 @@ pipeline {
     environment{
         def appVersion = '' //variable declaration
         //nexusUrl = 'nexus.bnsaws.online:8081'
-          nexusUrl = 'http://204.236.215.167:8081'
+          nexusUrl = '204.236.215.167:8081'
         region = "us-east-1"
         account_id = "655431895664"
     }
