@@ -43,7 +43,7 @@ pipeline {
                 """
             }
         }
-        stage('Docker build'){
+        /*stage('Docker build'){
             steps{
                 sh """
                     aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.${region}.amazonaws.com
@@ -53,7 +53,7 @@ pipeline {
                     docker push ${account_id}.dkr.ecr.${region}.amazonaws.com/expense-backend:${appVersion}
                 """
             }
-        }
+        }/*
 
         stage('Deploy'){
             steps{
@@ -88,7 +88,7 @@ pipeline {
             }
         } */
 
-        /* stage('Nexus Artifact Upload'){
+         stage('Nexus Artifact Upload'){
             steps{
                 script{
                     nexusArtifactUploader(
@@ -108,8 +108,8 @@ pipeline {
                     )
                 }
             }
-        } */
-        /* stage('Deploy'){
+        } 
+        stage('Deploy'){
             when{
                 expression{
                     params.deploy
@@ -123,7 +123,7 @@ pipeline {
                     build job: 'backend-deploy', parameters: params, wait: false
                 }
             }
-        } */
+        } 
     }
     post { 
         always { 
