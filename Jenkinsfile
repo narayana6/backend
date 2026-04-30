@@ -45,51 +45,7 @@ pipeline {
                 """
             }
         }
-        /*stage('Docker build'){
-            steps{
-                sh """
-                    aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.${region}.amazonaws.com
-
-                    docker build -t ${account_id}.dkr.ecr.${region}.amazonaws.com/expense-backend:${appVersion} .
-
-                    docker push ${account_id}.dkr.ecr.${region}.amazonaws.com/expense-backend:${appVersion}
-                """
-            }
-        }/*
-
-        stage('Deploy'){
-            steps{
-                sh """
-                    aws eks update-kubeconfig --region us-east-1 --name expense-dev
-                    cd helm
-                    sed -i 's/IMAGE_VERSION/${appVersion}/g' values.yaml
-                    #helm install backend .
-                    helm upgrade backend .
-                """
-            }
-        }
         
-        /* stage('Sonar Scan'){
-            environment {
-                scannerHome = tool 'sonar-6.0' //referring scanner CLI
-            }
-            steps {
-                script {
-                    withSonarQubeEnv('sonar-6.0') { //referring sonar server
-                        sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
-            }
-        }
-
-        stage("Quality Gate") {
-            steps {
-              timeout(time: 30, unit: 'MINUTES') {
-                waitForQualityGate abortPipeline: true
-              }
-            }
-        } */
-
          stage('Nexus Artifact Upload'){
             steps{
                 script{
@@ -113,24 +69,19 @@ pipeline {
          }
         
 
-          stage('Deploy'){
-                 when{
-                expression{
-                    params.deploy
-             }
-                 }
-
-          }
-    }
-}
-            
-              steps{
-                script{
-                    def params = [
-                        string(name: 'appVersion', value: "${appVersion}")
+       stage('Downstream Deploy') {
+            when {
+                expression { params.deploy }
+            }
+            steps { // Fixed: steps is now outside of 'when'
+                script {
+                    def buildParams = [
+                        string(name: 'appVersion', value: "${env.appVersion}")
                     ]
-                    build job: 'backend-deploy', parameters: params, wait: false
+                    build job: 'backend-deploy', parameters: buildParams, wait: false
                 }
             }
+        }
+    }
         
     
