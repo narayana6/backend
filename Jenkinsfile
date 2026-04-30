@@ -69,16 +69,14 @@ pipeline {
          }
         
 
-       stage('Downstream Deploy') {
-            when {
-                expression { params.deploy }
-            }
-            steps { // Fixed: steps is now outside of 'when'
+       stage('Deploy') {
+            
+            steps { 
                 script {
-                    def buildParams = [
+                    def Params = [
                         string(name: 'appVersion', value: "${env.appVersion}")
                     ]
-                    build job: 'backend-deploy', parameters: buildParams, wait: false
+                    build job: 'backend-deploy', parameters: Params, wait: false
                 }
             }
         }
