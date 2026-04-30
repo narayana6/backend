@@ -119,6 +119,8 @@ pipeline {
                     params.deploy
              }
                  }
+
+          }
             
               steps{
                 script{
@@ -129,4 +131,4 @@ pipeline {
                 }
             }
            }
-    }
+    
