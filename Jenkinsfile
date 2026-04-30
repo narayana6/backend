@@ -109,7 +109,8 @@ pipeline {
                     )
                 }
             }
-        } 
+         }
+        
 
            stage('Deploy'){
             
@@ -123,3 +124,4 @@ pipeline {
             }
            }
     }
+}
